@@ -1,0 +1,19 @@
+# python3 -m cegispro2.cmd prova.pgcl --post "[x=1] + [not (x=1)]*0" --prop "[x=1]*1"
+# python3 -m cegispro2.cmd prova.pgcl --post "[x=1] + [not (x=1)]*0" --prop "[x=0]*1"
+# ^
+# |
+# Qualsiasi valore inferiore ad 1 nella preexpectation dà (correttamente) errore poiché la probabilità di raggiungere uno stato in cui x=1 è 1 a prescindere dal valore iniziale di x
+
+# python3 -m cegispro2.cmd prova.pgcl --post "[x=0] + [not (x=0)]*0" --prop "[x=1]*1"
+# python3 -m cegispro2.cmd prova.pgcl --post "[x=0] + [not (x=0)]*0" --prop "[x=1]*0.5"
+# python3 -m cegispro2.cmd prova.pgcl --post "[x=0] + [not (x=0)]*0" --prop "[x=1]*0"
+# python3 -m cegispro2.cmd prova.pgcl --post "[x=0] + [not (x=0)]*0" --prop "[x=0]*0"
+# ^
+# |
+# Qualsiasi per qualsiasi valore che moltiplica [x=0] vale la proprietà poiché la probabilità di raggiungere uno stato in cui x=0 è 0 a prescindere dal valore iniziale di x
+
+nat x [0,1];
+
+while(not (x = 1)) {
+	x:=1
+}

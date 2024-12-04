@@ -1,0 +1,7 @@
+nat x [0,1];
+nat guard [0,1];
+
+while(guard=1) {
+	{x := 1} [0.5] {x := 0}
+	guard:=1;
+}

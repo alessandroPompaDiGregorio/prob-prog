@@ -1,0 +1,15 @@
+nat x [0,1];
+nat y [0,1];
+nat flag [0,1];
+
+while(not (flag=1)) {
+	{x:=0} [0.5] {x:=1}
+	{y:=0} [0.5] {y:=1}
+	if (x+y=1) {
+		flag:=1
+	} else {
+		skip
+	}
+#	observe (x+y = 1)
+# 	This observe is transformed into a loop guard via an auxiliary variable
+}

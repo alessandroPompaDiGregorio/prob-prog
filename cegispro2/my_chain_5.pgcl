@@ -1,0 +1,20 @@
+# python3 -m cegispro2.cmd my_chain_5.pgcl --post "[c=1] + [not (c=1)]*0" --prop "[c=0 & x=0]*0.8"
+# python3 -m cegispro2.cmd my_chain_5.pgcl --post "[c=1] + [not (c=1)]*0" --prop "[c=0 & x=0]*0.7"
+# python3 -m cegispro2.cmd my_chain_5.pgcl --post "[c=1] + [not (c=1)]*0" --prop "[c=0 & x=0]*0.67232"
+# python3 -m cegispro2.cmd my_chain_5.pgcl --post "[c=1] + [not (c=1)]*0" --prop "[c=0 & x=0]*0.67231"
+#
+# Only the last fails
+
+# Prob for c=0,x=0 to reach c=1: 0.67232 
+# which is (1/5)*\sum_{i=0}^{4}(1 - 1/5)^i
+
+nat c [0,1];
+nat x [0,5];
+
+while(c<=0 & x<5){
+    {c:=1}[0.2]{x:=x+1}
+}
+
+
+
+

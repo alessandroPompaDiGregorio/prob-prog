@@ -1,0 +1,15 @@
+# python3 -m cegispro2.cmd grid_small.pgcl --post "[a=0 & b=10] + [not (a=0 & b=10)]*0" --prop "[a<=0 & b<=0]*0.001"
+#
+# This one took >60 s to verify
+# Exact value should be 1/2^10 or 0.0009765625
+
+nat a [0,10];
+nat b [0,10];
+
+while(a<10 & b<10){
+    {a:=a+1}[0.5]{b:=b+1}
+}
+
+
+
+

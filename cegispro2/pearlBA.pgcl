@@ -1,0 +1,40 @@
+# python3 -m cegispro2.cmd pearlBA.pgcl --post "[burglary=1] + [not (burglary=1)]*0" --prop "[flag=0]*0.029"
+
+nat earthquake [0,1];
+nat burglary [0,1];
+nat alarm [0,1];
+nat phoneWorking [0,1];
+nat maryWakes [0,1];
+nat called [0,1];
+nat flag [0,1];
+
+while (not (flag=1)) {
+	{earthquake:=1} [0.001] {earthquake:=0}
+	{burglary:=1} [0.01] {burglary:=0}
+	
+	if (not (earthquake=0 & burglary=0)) {
+		alarm:=1;
+	} else { skip }
+	
+	if (earthquake=1) {
+		{phoneWorking:=1} [0.6] {phoneWorking:=0}
+	} else {
+		{phoneWorking:=1} [0.99] {phoneWorking:=0}
+	}
+	if (alarm=1 & earthquake=1) {
+		{maryWakes:=1} [0.8] {maryWakes:=0}
+	} else {
+		if (alarm=1) {
+			{maryWakes:=1} [0.6] {maryWakes:=0}
+		} else {
+			{maryWakes:=1} [0.2] {maryWakes:=0}
+		}
+	}
+	if (maryWakes=1 & phoneWorking=1) {
+		called:=1;
+	} else { skip }
+	
+	if (called=1) {
+		flag:=1;
+	} else { skip }
+}

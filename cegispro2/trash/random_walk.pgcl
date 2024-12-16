@@ -1,0 +1,27 @@
+nat i;
+nat r;
+nat y;
+# These three variables are assumed to be initially zero (you can do this with the prop in the command)
+nat first_iteration_flag [0,1]; # Assumed to be zero at first
+nat sd;
+nat pos [0,1];
+
+while (y < 1 & not (i < 3)) {
+	if (first_iteration_flag=0) {
+		first_iteration_flag:=1;
+		r := unif(0,10);
+		r := 1 / r;
+		sd := 2*r;
+	} else { skip }
+	# Normal discretization	
+	y := (y - 4*sd) : 23/100000 +
+	     (y - 3*sd) : 60/10000  +
+	     (y - 2*sd) : 61/1000   +
+	     (y - 1*sd) : 24/100    +
+	     (y)        : 38/100    +
+	     (y + 1*sd) : 24/100    +
+	     (y + 2*sd) : 61/1000   +
+	     (y + 3*sd) : 60/10000  +
+             (y + 4*sd) : 23/100000; 
+	i := i+1;
+} 

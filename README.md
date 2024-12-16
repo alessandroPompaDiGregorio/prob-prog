@@ -1,1 +1,1 @@
-# Probabilisti programming
+# Probabilistic programming

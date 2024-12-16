@@ -1,0 +1,7 @@
+nat sent [0,10];
+nat failed [0,10];
+
+while(failed<10 & sent<10){
+    {failed:=0;sent:=sent+1}[0.5]{failed:=failed+1}
+}
+

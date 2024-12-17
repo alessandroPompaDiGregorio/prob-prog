@@ -1,0 +1,8 @@
+#benchmarks/EXIST/PrinSys05.pgcl --post "[x=2] + [not (x=2)]*0" --prop "[x=2]"
+# This property from the paper is quite trivial
+
+nat x;
+
+while(x=0){
+	{x:=0}[0.5]{{x:=1}[0.5]{x:=2}}
+}

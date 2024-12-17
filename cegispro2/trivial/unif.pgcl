@@ -1,0 +1,7 @@
+nat x;
+nat flag [0,1];
+
+while (flag=0) {
+	flag:=1;
+	x:=unif(1,100);
+}

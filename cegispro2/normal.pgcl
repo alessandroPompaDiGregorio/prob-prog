@@ -1,0 +1,21 @@
+# python3 -m cegispro2.cmd normal.pgcl --post "[pos=0] + [not (pos=0)]*0" --prop "[flag=0 & coeff=0 & y=0 & pos=0]*0.55"
+
+nat flag [0,1]; # Initially zero
+nat coeff [0,10];
+nat y; 
+nat pos [0,1];
+
+while(flag=0) {
+	flag:=1;
+	coeff:=unif(0,10);
+	y:=y+coeff*(1/10);
+	coeff:=unif(0,10);
+	y:=y+coeff*(1/10);
+	coeff:=unif(0,10);
+	y:=y+coeff*(1/10);
+	if (0 < y-1.5) {
+		pos:=1;
+	} else {
+		pos:=0;
+	}
+}

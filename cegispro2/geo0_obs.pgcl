@@ -1,0 +1,13 @@
+# By memoryless property E[z] = z+4+3= z+7
+# python3 -m cegispro2.cmd geo0_obs.pgcl --post "z" --prop "[flip=0]*(z+7)"
+
+nat z;          # initially 1
+nat flip [0,1]; # initially 0
+
+while(flip=0) {
+	{flip:=1} [0.2] {z:=z+1}
+	if (z <= 2 & flip=1) {
+		flip:=0;
+	} else { skip }
+}
+# obs(z > 2)

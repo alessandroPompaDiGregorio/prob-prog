@@ -1,0 +1,13 @@
+# python3 -m cegispro2.cmd die_conditioning.pgcl --post "d1" --prop "[flag=0]*5"
+
+nat d1 [1,6];
+nat d2 [1,6];
+nat flag [0,1];
+
+while(flag=0) {
+	d1:=unif(1,6);
+	d2:=unif(1,6);
+	if (d1+d2=10) {
+		flag:=1;
+	} else {skip}
+}

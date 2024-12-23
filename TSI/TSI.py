@@ -183,48 +183,6 @@ def translate_sc(S,x):
     header = f"@tf.function(input_signature=[{arg_str}])"
     return f"{header}\ndef f0({xargs},m):\n{tr_S}\n    return {xargs},m"
 
-
-
-def compute_statistics_RW1(res,xl, e, eps, maxe):
-    m=res[3][0]
-    r=res[0][0]    
-    term = (m==1.0)    
-    fail = (m==0.0)      
-    live = tf.logical_not(term|fail)
-    lt2=    term|live
-    print('%s' %lt2)
-    na=live.numpy().sum()+term.numpy().sum()
-    
-    LB=r[lt2].numpy().sum()/na-eps     
-    UB=(r[term].numpy().sum()+maxe*live.numpy().sum()+10**6*eps)/(term.numpy().sum()-10**6*eps)
-
-    lower_prob=term.numpy().sum()/(term.numpy().sum()+live.numpy().sum())    
-    N=m.shape[0]
-    delta2 = 2*np.exp(-2*N*eps**2/maxe**2)+np.exp(-2*na*eps**2/maxe**2)
-    conf2 = 1-2*delta2
-    exp=[LB,UB]
-    return exp, lower_prob, conf2
-
-def compute_statistics_RW2(res,xl, e, eps, maxe):
-    m=res[3][0]
-    r=res[2][0]>=3
-    term = (m==1.0)    
-    fail = (m==0.0)      
-    live = tf.logical_not(term|fail)
-    lt2=    term|live
-    na=live.numpy().sum()+term.numpy().sum()
-    
-    LB=r[lt2].numpy().sum()/na-eps     
-    UB=(r[term].numpy().sum()+maxe*live.numpy().sum()+10**6*eps)/(term.numpy().sum()-10**6*eps)
-
-    lower_prob=term.numpy().sum()/(term.numpy().sum()+live.numpy().sum())    
-    N=m.shape[0]
-    delta = 2*np.exp(-N*eps**2/maxe**2)+np.exp(-na*eps**2/maxe**2)
-    conf = 1-2*delta
-    exp=[LB,UB]
-    return exp, lower_prob, conf
-
-
 def compute_statistics_BA(res,xl, e, eps, maxe):
     m=res[4][0]
     N=m.shape[0]
@@ -242,47 +200,6 @@ def compute_statistics_BA(res,xl, e, eps, maxe):
     lower_prob=term.numpy().sum()/(term.numpy().sum()+live.numpy().sum())   
     delta = 2*np.exp(-2*N*eps**2/maxe**2)+np.exp(-2*na*eps**2/maxe**2)
     conf = 1-2*delta
-    exp=[LB,UB]
-    return exp, lower_prob, conf
-
-def compute_statistics_TS(res,xl, e, eps, maxe):
-    m=res[9][0]
-    N=m.shape[0]
-    r=res[0][0]    
-    term = (m==1.0)    
-    fail = (m==0.0)      
-    live = tf.logical_not(term|fail)   
-    lt2=    term|live
-    na=live.numpy().sum()+term.numpy().sum()
-    
-    LB=r[lt2].numpy().sum()/na-eps     
-    UB= r[lt2].numpy().sum()/na+eps   
-
-    lower_prob=term.numpy().sum()/(term.numpy().sum()+live.numpy().sum())   
-    
-    delta = 2*np.exp(-2*N*eps**2/maxe**2)+np.exp(-2*na*eps**2/maxe**2)
-    conf = 1-2*delta
-    exp=[LB,UB]
-    return exp, lower_prob, conf
-
-def compute_statistics_CG(res,xl, e, eps, maxe):
-    m=res[6][0]
-    N=m.shape[0]
-    r=res[0][0]    
-    term = (m==1.0)    
-    fail = (m==0.0)      
-    live = tf.logical_not(term|fail)   
-    lt2=    term|live
-    na=live.numpy().sum()+term.numpy().sum()
-    
-    LB=r[lt2].numpy().sum()/na-eps    
-    UB=r[lt2].numpy().sum()/na+eps     
-
-    lower_prob=term.numpy().sum()/(term.numpy().sum()+live.numpy().sum())   
-    
-    delta = 2*np.exp(-2*N*eps**2/maxe**2)+np.exp(-2*na*eps**2/maxe**2)
-    conf = 1-2*delta
-
     exp=[LB,UB]
     return exp, lower_prob, conf
 
@@ -310,50 +227,6 @@ def compute_statistics_MH(res,xl, e, eps, maxe):
 
 # My compute statistics functions
 
-def compute_statistics_prova(res,xl, e, eps, maxe):
-    m=res[2][0]
-    
-    N=m.shape[0]
-    x=res[0][0]
-    term = (m==1.0)
-    fail = (m==0.0)      
-    live = tf.logical_not(term|fail)
-    lt2=    term|live
-    na=live.numpy().sum()+term.numpy().sum()
-    
-    UB=x[lt2].numpy().sum()/na+eps
-    LB=x[lt2].numpy().sum()/na-eps
-
-    lower_prob=term.numpy().sum()/(term.numpy().sum()+live.numpy().sum())   
-    
-    delta = 2*np.exp(-2*N*eps**2/maxe**2)+np.exp(-2*na*eps**2/maxe**2)
-    conf = 1-2*delta
-
-    exp=[LB,UB]
-    return exp, lower_prob, conf
-
-def compute_statistics_basic_prob(res,xl, e, eps, maxe):
-    m=res[1][0]
-    
-    N=m.shape[0]
-    sent=res[0][0]
-    term = (m==1.0)
-    fail = (m==0.0)      
-    live = tf.logical_not(term|fail)
-    lt2=    term|live
-    na=live.numpy().sum()+term.numpy().sum()
-    
-    LB=sent[lt2].numpy().sum()/na-eps     
-    UB=sent[lt2].numpy().sum()/na+eps     
-
-    lower_prob=term.numpy().sum()/(term.numpy().sum()+live.numpy().sum())   
-    
-    delta = 2*np.exp(-2*N*eps**2/maxe**2)+np.exp(-2*na*eps**2/maxe**2)
-    conf = 1-2*delta
-
-    exp=[LB,UB]
-    return exp, lower_prob, conf
-
 def compute_statistics_brp(res, eps, maxe):
     m = res[3][0]
 
@@ -361,11 +234,10 @@ def compute_statistics_brp(res, eps, maxe):
     failed=res[1][0]
     failed_indicator = (failed==10.0)
     term = (m==1.0)
-    fail = (m==0.0)      
+    fail = (m==0.0)
     live = tf.logical_not(term|fail)
     lt2=    term|live
     na=live.numpy().sum()+term.numpy().sum()
-
     LB=failed_indicator[lt2].numpy().sum()/na-eps     
     UB=failed_indicator[lt2].numpy().sum()/na+eps     
 
@@ -373,6 +245,9 @@ def compute_statistics_brp(res, eps, maxe):
     
     delta = 2*np.exp(-2*N*eps**2/maxe**2)+np.exp(-2*na*eps**2/maxe**2)
     conf = 1-2*delta
+
+    print(delta)
+    print(conf)
 
     exp=[LB,UB]
     return exp, lower_prob, conf
@@ -384,7 +259,7 @@ def compute_statistics_brp_finite_family(res, eps, maxe):
     failed=res[2][0]
     failed_indicator = (failed==5.0)
     term = (m==1.0)
-    fail = (m==0.0)      
+    fail = (m==0.0)
     live = tf.logical_not(term|fail)
     lt2=    term|live
     na=live.numpy().sum()+term.numpy().sum()
@@ -396,6 +271,9 @@ def compute_statistics_brp_finite_family(res, eps, maxe):
     
     delta = 2*np.exp(-2*N*eps**2/maxe**2)+np.exp(-2*na*eps**2/maxe**2)
     conf = 1-2*delta
+
+    print(delta)
+    print(conf)
 
     exp=[LB,UB]
     return exp, lower_prob, conf
@@ -526,13 +404,36 @@ def compute_statistics_geo0_1(res, eps, maxe, z_initial):
     z-=z_initial
     
     term = (m==1.0)
-    fail = (m==0.0)      
+    fail = (m==0.0)
     live = tf.logical_not(term|fail)
     lt2=    term|live
     na=live.numpy().sum()+term.numpy().sum()
 
     LB=z[lt2].numpy().sum()/na-eps     
     UB=z[lt2].numpy().sum()/na+eps     
+
+    lower_prob=term.numpy().sum()/(term.numpy().sum()+live.numpy().sum())   
+    
+    delta = 2*np.exp(-2*N*eps**2/maxe**2)+np.exp(-2*na*eps**2/maxe**2)
+    conf = 1-2*delta
+
+    exp=[LB,UB]
+    return exp, lower_prob, conf
+
+def compute_statistics_die_cond(res, eps, maxe):
+    m = res[3][0]
+    
+    N=m.shape[0]
+    d1=res[0][0]
+    
+    term = (m==1.0)
+    fail = (m==0.0)      
+    live = tf.logical_not(term|fail)
+    lt2=    term|live
+    na=live.numpy().sum()+term.numpy().sum()
+
+    LB=d1[lt2].numpy().sum()/na-eps     
+    UB=d1[lt2].numpy().sum()/na+eps     
 
     lower_prob=term.numpy().sum()/(term.numpy().sum()+live.numpy().sum())   
     
@@ -716,7 +617,67 @@ def f0(sent,failed,coin,m):
     def body1(sent,failed,coin,m):
         res = tf.where((tf.logical_and(tf.less(failed,10.0),tf.less(sent,packets))) & tf.greater(m,0.0),tf.concat(body_f1(sent,failed,coin,m),axis=0),tf.concat((sent,failed,coin,m),axis=0))  # adjustment made originally no list
         return tuple([res[tf.newaxis,j] for j in range(4)]) # slicing tensor res
-    sent,failed,coin,m=tf.while_loop(lambda *_: True, body1, (sent,failed,coin,m), maximum_iterations=10) # probably should increase max_it to get some failures
+    sent,failed,coin,m=tf.while_loop(lambda *_: True, body1, (sent,failed,coin,m), maximum_iterations=10)
+    m=tf.where(tf.logical_or(tf.logical_not(tf.logical_and(tf.less(failed,10.0),tf.less(sent,packets))) , tf.equal(m,0.0)),  m * tf.cast(True,tf.float32), np.NaN)
+    return sent,failed,coin,m
+
+var('sent failed coin')
+
+N=1 # Warm up 
+sent = tf.zeros((1,N))
+failed = tf.zeros((1,N))
+coin = tf.zeros((1,N))
+m = tf.constant(1.0,shape=(1,N))
+start_time=time.time()
+res=f0(sent,failed,coin,m)
+final_time=(time.time()-start_time)
+print("TOTAL elapsed time 1  elem %s seconds -------        " % final_time)
+
+
+N=10**6
+sent = tf.zeros((1,N))
+failed = tf.zeros((1,N))
+coin = tf.zeros((1,N))
+m = tf.constant(1.0,shape=(1,N))
+start_time=time.time()
+res=f0(sent,failed,coin,m)
+final_time=(time.time()-start_time)
+print("TOTAL elapsed time 1M elems  %s seconds -------        " % final_time)
+
+eps=0.00005
+maxe=1
+exp, lower_prob,conf=compute_statistics_brp(res, eps, maxe)
+
+print("exp %s" % exp)
+# central_value = (exp[0] + exp[1]) / 2;
+# print("central value %s" % central_value)
+
+# With 100 as max iterations
+
+@tf.function(input_signature=[tf.TensorSpec(shape=None, dtype=tf.float32),tf.TensorSpec(shape=None, dtype=tf.float32),tf.TensorSpec(shape=None, dtype=tf.float32),tf.TensorSpec(shape=None, dtype=tf.float32)])
+def f0(sent,failed,coin,m):
+    B_probs = tf.zeros(shape=tf.shape(coin))
+    B_probs += 0.99
+    packets = 8_000_000_000
+    def body_f1(sent,failed,coin,m):
+        coin = tfd.Bernoulli(probs=B_probs).sample()
+        coin = tf.cast(coin,dtype=tf.float32)
+        def f2(sent,failed,coin,m):
+            sent+=1.0
+            failed-=failed
+            return sent,failed,coin,m
+        def f3(sent,failed,coin,m):
+            failed+=1.0
+            return sent,failed,coin,m
+        # mask = tf.logical_and(tf.less(failed,10.0),tf.less(sent,packets)) # (failed<10) & (sent<packets)
+        mask = tf.equal(coin,1.0)
+        res=tf.where(mask, tf.concat(list(f2(sent,failed,coin,m)),axis=0), tf.concat(list(f3(sent,failed,coin,m)),axis=0)) # adjustment made originally no list
+        sent,failed,coin,m = tuple(res[tf.newaxis,j] for j in range(4)) # slicing tensor res
+        return sent,failed,coin,m
+    def body1(sent,failed,coin,m):
+        res = tf.where((tf.logical_and(tf.less(failed,10.0),tf.less(sent,packets))) & tf.greater(m,0.0),tf.concat(body_f1(sent,failed,coin,m),axis=0),tf.concat((sent,failed,coin,m),axis=0))  # adjustment made originally no list
+        return tuple([res[tf.newaxis,j] for j in range(4)]) # slicing tensor res
+    sent,failed,coin,m=tf.while_loop(lambda *_: True, body1, (sent,failed,coin,m), maximum_iterations=100)
     m=tf.where(tf.logical_or(tf.logical_not(tf.logical_and(tf.less(failed,10.0),tf.less(sent,packets))) , tf.equal(m,0.0)),  m * tf.cast(True,tf.float32), np.NaN)
     return sent,failed,coin,m
 
@@ -783,7 +744,7 @@ def f0(sent,maxsent,failed,coin,m):
     def body1(sent,maxsent,failed,coin,m):
         res = tf.where(((failed < 5) & (maxsent < 8000000) & (sent < maxsent)) & tf.greater(m,0.0),tf.concat(body_f1(sent,maxsent,failed,coin,m),axis=0),tf.concat((sent,maxsent,failed,coin,m),axis=0))
         return tuple([res[tf.newaxis,j] for j in range(5)]) # slicing tensor res
-    sent,maxsent,failed,coin,m=tf.while_loop(lambda *_: True, body1, (sent,maxsent,failed,coin,m), maximum_iterations=10) # probably should increase max_it to get some failures
+    sent,maxsent,failed,coin,m=tf.while_loop(lambda *_: True, body1, (sent,maxsent,failed,coin,m), maximum_iterations=10)
     m=tf.where(tf.logical_or(tf.logical_not((failed < 5) & (maxsent < 8000000) & (sent < maxsent)) , tf.equal(m,0.0)),  m * tf.cast(True,tf.float32), np.NaN)
     return sent,maxsent,failed,coin,m
 
@@ -1050,7 +1011,7 @@ def f0(z,flip,coin,m):
     def body1(z,flip,coin,m):
         res = tf.where((tf.equal(flip,0.0)) & tf.greater(m,0.0),tf.concat(body_f1(z,flip,coin,m),axis=0),tf.concat((z,flip,coin,m),axis=0))
         return tuple([res[tf.newaxis,j] for j in range(4)]) # slicing tensor res
-    z,flip,coin,m=tf.while_loop(lambda *_: True, body1, (z,flip,coin,m), maximum_iterations=20) # max_it was 10
+    z,flip,coin,m=tf.while_loop(lambda *_: True, body1, (z,flip,coin,m), maximum_iterations=20)
     m=tf.where(tf.logical_or(tf.logical_not(tf.equal(flip,0.0)) , tf.equal(m,0.0)),  m * tf.cast(True,tf.float32), np.NaN)
     return z,flip,coin,m
 
@@ -1111,6 +1072,125 @@ exp, lower_prob,conf=compute_statistics_geo0_1(res, eps, maxe, z)
 print("exp %s" % exp)
 # central_value = (exp[0] + exp[1]) / 2;
 # print("central value %s" % central_value)
+
+#---------------------------------- Example: geo0_obs ----------------------------
+
+print("---------------- geo0_obs ----------------")
+
+var('z flip coin')
+
+S_s = whl((flip==0), seq(draw(coin,B(0.2)),ite(coin==1,setx(flip,1),setx(z,z+1))),z>2)
+xlist=['z', 'flip', 'coin']
+# tr_S=translate_sc(S_s,xlist)
+# print(tr_S)
+
+@tf.function(input_signature=[tf.TensorSpec(shape=None, dtype=tf.float32),tf.TensorSpec(shape=None, dtype=tf.float32),tf.TensorSpec(shape=None, dtype=tf.float32),tf.TensorSpec(shape=None, dtype=tf.float32)])
+def f0(z,flip,coin,m):
+    B_probs = tf.zeros(shape=tf.shape(coin))
+    B_probs += 0.2
+    def body_f1(z,flip,coin,m):
+        coin = tfd.Bernoulli(probs=B_probs).sample()
+        coin = tf.cast(coin,dtype=tf.float32)
+        def f2(z,flip,coin,m):
+            flip+=1
+            return z,flip,coin,m
+        def f3(z,flip,coin,m):
+            z+=1
+            return z,flip,coin,m
+        mask = (coin==1.0)
+        res=tf.where(mask, tf.concat(f2(z,flip,coin,m),axis=0), tf.concat(f3(z,flip,coin,m),axis=0))
+        z,flip,coin,m = tuple(res[tf.newaxis,j] for j in range(4)) # slicing tensor res
+        return z,flip,coin,m
+    def body1(z,flip,coin,m):
+        res = tf.where(tf.equal(flip,0.0) & tf.greater(m,0.0),tf.concat(body_f1(z,flip,coin,m),axis=0),tf.concat((z,flip,coin,m),axis=0))
+        return tuple([res[tf.newaxis,j] for j in range(4)]) # slicing tensor res
+    z,flip,coin,m=tf.while_loop(lambda *_: True, body1, (z,flip,coin,m), maximum_iterations=20)
+    m=tf.where(tf.logical_or(tf.logical_not(tf.equal(flip,0.0)) , tf.equal(m,0.0)),  m * tf.cast(tf.greater(z,2),tf.float32), np.NaN)
+    return z,flip,coin,m
+
+var('x y z coin')
+
+N=1 # Warm up 
+z = tf.zeros((1,N))
+flip = tf.zeros((1,N))
+coin = tf.zeros((1,N))
+m = tf.constant(1.0,shape=(1,N))
+start_time=time.time()
+res=f0(z,flip,coin,m)
+final_time=(time.time()-start_time)
+print("TOTAL elapsed time 1  elem %s seconds -------        " % final_time)
+
+N=10**6
+z = tf.zeros((1,N))
+flip = tf.zeros((1,N))
+coin = tf.zeros((1,N))
+m = tf.constant(1.0,shape=(1,N))
+start_time=time.time()
+res=f0(z,flip,coin,m)
+final_time=(time.time()-start_time)
+print("TOTAL elapsed time 1M  elem %s seconds -------        " % final_time)
+
+eps=0.005
+maxe=1
+exp, lower_prob,conf=compute_statistics_geo0(res, eps, maxe)
+
+print("exp %s" % exp)
+# central_value = (exp[0] + exp[1]) / 2;
+# print("central value %s" % central_value)
+
+#---------------------------------- Example: die_conditioning ----------------------------
+
+print("---------------- die_conditioning ----------------")
+
+var('d1 d2 sum')
+
+S_s = seq(draw(d1,rhoU(1,6)),draw(d2,rhoU(1,6)),setx(sum,d1+d2),obs(sum==10))
+xlist=['d1', 'd2', 'sum']
+# tr_S=translate_sc(S_s,xlist)
+# print(tr_S)
+
+@tf.function(input_signature=[tf.TensorSpec(shape=None, dtype=tf.float32),tf.TensorSpec(shape=None, dtype=tf.float32),tf.TensorSpec(shape=None, dtype=tf.float32),tf.TensorSpec(shape=None, dtype=tf.float32)])
+def f0(d1,d2,sum,m):
+    probs = tf.constant([1/6] * 6, dtype=tf.float32)
+    outcomes = tf.constant([1, 2, 3, 4, 5, 6], dtype=tf.float32)
+    dice = tfd.FiniteDiscrete(outcomes, probs)
+    d1=dice.sample(tf.shape(d1))
+    d2=dice.sample(tf.shape(d2))
+    sum=d1 + d2
+    m = m * tf.cast((sum==10),tf.float32)
+    return d1,d2,sum,m
+
+var('d1 d2 sum')
+
+N=1 # Warm up 
+d1 = tf.zeros((1,N))
+d2 = tf.zeros((1,N))
+sum = tf.zeros((1,N))
+m = tf.constant(1.0,shape=(1,N))
+start_time=time.time()
+res=f0(d1,d2,sum,m)
+final_time=(time.time()-start_time)
+print("TOTAL elapsed time 1  elem %s seconds -------        " % final_time)
+
+N=10**6
+d1 = tf.zeros((1,N))
+d2 = tf.zeros((1,N))
+sum = tf.zeros((1,N))
+m = tf.constant(1.0,shape=(1,N))
+start_time=time.time()
+res=f0(d1,d2,sum,m)
+final_time=(time.time()-start_time)
+print("TOTAL elapsed time 1M  elem %s seconds -------        " % final_time)
+
+eps=0.005
+maxe=1
+exp, lower_prob,conf=compute_statistics_die_cond(res, eps, maxe)
+
+print("exp %s" % exp)
+# central_value = (exp[0] + exp[1]) / 2;
+# print("central value %s" % central_value)
+print('exit')
+exit()
 
 #---------------------------------- Example: PrinSys ----------------------------
 
@@ -1289,8 +1369,6 @@ def f0(x,n,coin,m):
     return x,n,coin,m
 
 var('x n coin')
-
-# Update this (initial states x < n)
 
 N=1 # Warm up 
 x = tf.zeros((1,N))

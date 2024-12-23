@@ -1,4 +1,5 @@
-# python3 -m cegispro2.cmd die_conditioning.pgcl --post "d1" --prop "[flag=0]*5"
+# python3 -m cegispro2.cmd die_conditioning.pgcl --post "d1" --prop "[flag=0]*5.005"
+# python3 -m cegispro2.cmd die_conditioning.pgcl --post "d1" --prop "[flag=0]*4.995" --invarianttype sub --cdb
 
 nat d1 [1,6];
 nat d2 [1,6];

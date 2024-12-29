@@ -2,6 +2,9 @@
 # python3 -m cegispro2.cmd geo0.pgcl --post "z" --prop "[z=1 & flip=0]*5"
 # python3 -m cegispro2.cmd geo0.pgcl --post "z" --prop "[flip=0]*(z+4)"
 
+# python3 -m cegispro2.cmd geo0.pgcl --post "z" --prop "[z=1 & flip=0]*4.954" --invarianttype sub --cdb
+# python3 -m cegispro2.cmd geo0.pgcl --post "z" --prop "[flip=0]*(z+3.952)" --invarianttype sub --cdb
+
 nat z;          # initially 1
 nat flip [0,1]; # initially 0
 

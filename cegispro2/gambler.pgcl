@@ -1,4 +1,5 @@
-# python3 -m cegispro2.cmd gambler.pgcl --post "[x=4] + [not (x=4)]*0" --prop "[x=2 & y=4 & z=0]*0.5"
+# python3 -m cegispro2.cmd gambler.pgcl --post "[x=4] + [not (x=4)]*0" --prop "[x=2 & y=4 & z=0]*0.504"
+# python3 -m cegispro2.cmd gambler.pgcl --post "[x=4] + [not (x=4)]*0" --prop "[x=2 & y=4 & z=0]*0.494" --invarianttype sub --cdb
 #
 # P_win = 0.5
 

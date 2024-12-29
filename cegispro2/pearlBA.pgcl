@@ -1,4 +1,5 @@
-# python3 -m cegispro2.cmd pearlBA.pgcl --post "[burglary=1] + [not (burglary=1)]*0" --prop "[flag=0]*0.029"
+# python3 -m cegispro2.cmd pearlBA.pgcl --post "[burglary=1] + [not (burglary=1)]*0" --prop "[flag=0]*0.034"
+# python3 -m cegispro2.cmd pearlBA.pgcl --post "[burglary=1] + [not (burglary=1)]*0" --prop "[flag=0]*0.024" --invarianttype sub --cdb
 
 nat earthquake [0,1];
 nat burglary [0,1];

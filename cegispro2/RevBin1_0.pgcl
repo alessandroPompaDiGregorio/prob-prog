@@ -1,5 +1,5 @@
-# python3 -m cegispro2.cmd RevBin1_0.pgcl --post "z" --prop "[x=5 & z=3]*(13)"
-# python3 -m cegispro2.cmd RevBin1_0.pgcl --post "z" --prop "[x=5 & z=3]*8" --invarianttype sub --cdb
+# python3 -m cegispro2.cmd RevBin1_0.pgcl --post "z" --prop "[x=5 & z=3]*11.773"
+# python3 -m cegispro2.cmd RevBin1_0.pgcl --post "z" --prop "[x=5 & z=3]*11.763" --invarianttype sub --cdb
 
 nat x;
 nat z;

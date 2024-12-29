@@ -1,0 +1,13 @@
+# python3 -m cegispro2.cmd brp_10_obs.pgcl --post "[sent < 5] + [not (sent < 5)]*0" --prop "[failed=0 & sent=0]*0.8"
+
+nat sent [0,10];
+nat failed [0,10];
+
+while(failed<10 & sent<10){
+    {failed:=0;sent:=sent+1}[0.5]{failed:=failed+1}
+    if (sent=10) {
+	sent:=0;
+	failed:=0;
+    } else { skip }
+}
+# obs(failed=10)

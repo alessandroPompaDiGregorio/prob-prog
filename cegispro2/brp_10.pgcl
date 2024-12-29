@@ -1,4 +1,5 @@
-# python3 -m cegispro2.cmd brp_10.pgcl --post "[failed=10] + [not (failed=10)]*0" --prop "[failed=0 & sent=0]*0.03"
+# python3 -m cegispro2.cmd brp_10.pgcl --post "[failed=10] + [not (failed=10)]*0" --prop "[failed=0 & sent=0]*0.014"
+# python3 -m cegispro2.cmd brp_10.pgcl --post "[failed=10] + [not (failed=10)]*0" --prop "[failed=0 & sent=0]*0.004" --invarianttype sub --cdb
 
 nat sent [0,10];
 nat failed [0,10];

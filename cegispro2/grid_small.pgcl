@@ -1,6 +1,6 @@
-# python3 -m cegispro2.cmd grid_small.pgcl --post "[a=0 & b=10] + [not (a=0 & b=10)]*0" --prop "[a<=0 & b<=0]*0.001"
+# python3 -m cegispro2.cmd grid_small.pgcl --post "[a=0 & b=10] + [not (a=0 & b=10)]*0" --prop "[a<=0 & b<=0]*0.006"
+# python3 -m cegispro2.cmd grid_small.pgcl --post "[a=0 & b=10] + [not (a=0 & b=10)]*0" --prop "[a<=0 & b<=0]*0" --invarianttype sub --cdb
 #
-# This one took >60 s to verify
 # Exact value should be 1/2^10 or 0.0009765625
 
 nat a [0,10];

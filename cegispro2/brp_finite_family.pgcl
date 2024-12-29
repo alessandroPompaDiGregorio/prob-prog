@@ -1,4 +1,5 @@
-# python3 -m cegispro2.cmd brp_finite_family.pgcl --post "[failed=5] + [not (failed=5)]*0" --prop "[failed<=0 & sent<=0]*0.05"
+# python3 -m cegispro2.cmd brp_finite_family.pgcl --post "[failed=5] + [not (failed=5)]*0" --prop "[failed<=0 & sent<=0]*0.005"
+# python3 -m cegispro2.cmd brp_finite_family.pgcl --post "[failed=5] + [not (failed=5)]*0" --prop "[failed<=0 & sent<=0]*0" --invarianttype sub --cdb
 
 nat sent [0,8000000];
 nat maxsent [0,8000000];

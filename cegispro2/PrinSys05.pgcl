@@ -1,4 +1,5 @@
-# python3 -m cegispro2.cmd PrinSys05.pgcl --post "[x=2] + [not (x=2)]*0" --prop "[x=2]"
+# python3 -m cegispro2.cmd PrinSys05.pgcl --post "[x=2] + [not (x=2)]*0" --prop "[x=2]*1.005"
+# python3 -m cegispro2.cmd PrinSys05.pgcl --post "[x=2] + [not (x=2)]*0" --prop "[x=2]*0.995" --invarianttype sub --cdb
 
 nat x;
 

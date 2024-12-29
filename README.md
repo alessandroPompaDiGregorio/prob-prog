@@ -1,3 +1,8 @@
+This repository contains the experiments for my thesis: A comparative analysis of verification techniques for probabilistic programs.
+
+For more details regarding the tools that I have used, visit:
+- https://github.com/moves-rwth/cegispro2
+- https://github.com/Luisa-unifi/probabilistic_programming/blob/main/TSI.py
 ## TSI
 
 The value of eps is 0.005. This allows to obtain a delta which is less than 0.001 (often much less then 0.001)
@@ -18,7 +23,7 @@ The value of eps is 0.005. This allows to obtain a delta which is less than 0.00
 | PrinSys           | 0.41     | [0.995, 1.005]   | 10                             | $10^6$                |                                                                                                                     |
 | RevBin            | 0.33     | [11.763, 11.773] | 10                             | $10^6$                |                                                                                                                     |
 | sprdwalk          | 0.31     | 0.986897         | 10                             | $10^6$                | TSI used to calculate proportion of terminated/failed executions.                                                   |
-| normal            | 0.02     | [0.527, 0.537]   | -                              | $10^6$                |                                                                                                                     |
+| normal            | 0.02     | [0.527, 0.537]   | -                              | $10^6$                | $p=0.5342$                                                                                                          |
 | Monty Hall        | 0.39     | [0.661, 0.671]   | -                              | $10^6$                | Contains an observe statement; $p=\frac23$                                                                          |
 | Burglar Alarm     | 0.08     | [0.024, 0.034]   | -                              | $10^6$                | Contains an observe statement                                                                                       |
 
@@ -41,7 +46,7 @@ In this table we verify the upper bounds given by TSI using cegispro2. TO=5min
 | PrinSys           | 0.18                 | 1              | [x=2] + [not (x=2)]*0                   | [x=2]*1.005                            | $p=1$                                      |
 | RevBin            | TO                   | -              | z                                       | [x=5 & z=3]*11.773                     |                                            |
 | sprdwalk          | 0.04                 | 3              | PAST (Positive Almost Sure Termination) | Initial states: [x < n]                |                                            |
-| normal            | 76.66                | 2              | [pos=0] + [not (pos=0)]*0               | [flag=0 & coeff=0 & y=0 & pos=0]*0.537 |                                            |
+| normal            | 76.66                | 2              | [pos=0] + [not (pos=0)]*0               | [flag=0 & coeff=0 & y=0 & pos=0]*0.537 | $p=0.5342$                                 |
 | Monty Hall        | 9.05                 | 1              | [win=1] + [not (win=1)]*0               | [flag=0]*0.671                         | Contains an observe statement; $p=\frac23$ |
 | Burglar Alarm     | 14.29                | 10             | [burglary=1] + [not (burglary=1)]*0     | [flag=0]*0.034                         | Contains an observe statement              |
 
@@ -63,6 +68,6 @@ In this table we verify the lower bounds given by TSI with cegispro2. TO=5min
 | die_conditioning  | TO                   | -              | d1                                  | [flag=0]*4.995                         | Contains observe. $\mathbb{E}[d_1]=5$      |
 | PrinSys           | 0.26                 | 1              | [x=2] + [not (x=2)]*0               | [x=2]*0.995                            | $p=1$                                      |
 | RevBin            | 0.19                 | 5              | z                                   | [x=5 & z=3]*11.763                     |                                            |
-| normal            | -                    | -              | [pos=0] + [not (pos=0)]*0           | [flag=0 & coeff=0 & y=0 & pos=0]*0.527 |                                            |
+| normal            | -                    | -              | [pos=0] + [not (pos=0)]*0           | [flag=0 & coeff=0 & y=0 & pos=0]*0.527 | $p=0.5342$                                 |
 | Monty Hall        | 239.52               | 1              | [win=1] + [not (win=1)]*0           | [flag=0]*0.661                         | Contains an observe statement; $p=\frac23$ |
 | Burglar Alarm     | -                    | -              | [burglary=1] + [not (burglary=1)]*0 | [flag=0]*0.024                         | Contains an observe statement              |

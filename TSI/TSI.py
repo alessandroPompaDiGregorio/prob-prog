@@ -199,6 +199,9 @@ def compute_statistics_BA(res,xl, e, eps, maxe):
 
     lower_prob=term.numpy().sum()/(term.numpy().sum()+live.numpy().sum())   
     delta = 2*np.exp(-2*N*eps**2/maxe**2)+np.exp(-2*na*eps**2/maxe**2)
+
+    print('delta BA: %s' % delta)
+
     conf = 1-2*delta
     exp=[LB,UB]
     return exp, lower_prob, conf
@@ -221,6 +224,8 @@ def compute_statistics_MH(res,xl, e, eps, maxe):
     
     delta = 2*np.exp(-2*N*eps**2/maxe**2)+np.exp(-2*na*eps**2/maxe**2)
     conf = 1-2*delta
+
+    print('delta MH: %s' % delta)
 
     exp=[LB,UB]
     return exp, lower_prob, conf
@@ -246,8 +251,7 @@ def compute_statistics_brp(res, eps, maxe):
     delta = 2*np.exp(-2*N*eps**2/maxe**2)+np.exp(-2*na*eps**2/maxe**2)
     conf = 1-2*delta
 
-    print(delta)
-    print(conf)
+    print('delta brp: %s' % delta)
 
     exp=[LB,UB]
     return exp, lower_prob, conf
@@ -272,8 +276,7 @@ def compute_statistics_brp_finite_family(res, eps, maxe):
     delta = 2*np.exp(-2*N*eps**2/maxe**2)+np.exp(-2*na*eps**2/maxe**2)
     conf = 1-2*delta
 
-    print(delta)
-    print(conf)
+    print('delta brp fin: %s' % delta)
 
     exp=[LB,UB]
     return exp, lower_prob, conf
@@ -296,6 +299,8 @@ def compute_statistics_my_chain_5(res, eps, maxe):
     
     delta = 2*np.exp(-2*N*eps**2/maxe**2)+np.exp(-2*na*eps**2/maxe**2)
     conf = 1-2*delta
+
+    print('delta my chain: %s' % delta)
 
     exp=[LB,UB]
     return exp, lower_prob, conf
@@ -321,6 +326,8 @@ def compute_statistics_my_grid_small(res, eps, maxe):
     delta = 2*np.exp(-2*N*eps**2/maxe**2)+np.exp(-2*na*eps**2/maxe**2)
     conf = 1-2*delta
 
+    print('delta grid: %s' % delta)
+
     exp=[LB,UB]
     return exp, lower_prob, conf
 
@@ -329,7 +336,7 @@ def compute_statistics_normal(res, eps, maxe):
     
     N=m.shape[0]
     y=res[0][0]
-    pos = 0<y-1.5
+    pos = y<=1.5
     
     term = (m==1.0)
     fail = (m==0.0)      
@@ -344,6 +351,8 @@ def compute_statistics_normal(res, eps, maxe):
     
     delta = 2*np.exp(-2*N*eps**2/maxe**2)+np.exp(-2*na*eps**2/maxe**2)
     conf = 1-2*delta
+
+    print('delta normal: %s' % delta)
 
     exp=[LB,UB]
     return exp, lower_prob, conf
@@ -369,6 +378,8 @@ def compute_statistics_gambler(res, eps, maxe):
     delta = 2*np.exp(-2*N*eps**2/maxe**2)+np.exp(-2*na*eps**2/maxe**2)
     conf = 1-2*delta
 
+    print('delta gambler: %s' % delta)
+
     exp=[LB,UB]
     return exp, lower_prob, conf
 
@@ -391,6 +402,8 @@ def compute_statistics_geo0(res, eps, maxe):
     
     delta = 2*np.exp(-2*N*eps**2/maxe**2)+np.exp(-2*na*eps**2/maxe**2)
     conf = 1-2*delta
+
+    print('delta geo0: %s' % delta)
 
     exp=[LB,UB]
     return exp, lower_prob, conf
@@ -416,6 +429,7 @@ def compute_statistics_geo0_1(res, eps, maxe, z_initial):
     
     delta = 2*np.exp(-2*N*eps**2/maxe**2)+np.exp(-2*na*eps**2/maxe**2)
     conf = 1-2*delta
+    print('delta geo01: %s' % delta)
 
     exp=[LB,UB]
     return exp, lower_prob, conf
@@ -439,6 +453,7 @@ def compute_statistics_die_cond(res, eps, maxe):
     
     delta = 2*np.exp(-2*N*eps**2/maxe**2)+np.exp(-2*na*eps**2/maxe**2)
     conf = 1-2*delta
+    print('delta die cond: %s' % delta)
 
     exp=[LB,UB]
     return exp, lower_prob, conf
@@ -463,6 +478,7 @@ def compute_statistics_PrinSys(res, eps, maxe):
     
     delta = 2*np.exp(-2*N*eps**2/maxe**2)+np.exp(-2*na*eps**2/maxe**2)
     conf = 1-2*delta
+    print('delta prinsys: %s' % delta)
 
     exp=[LB,UB]
     return exp, lower_prob, conf
@@ -486,6 +502,7 @@ def compute_statistics_RevBin_1(res, eps, maxe, x_original, z_original):
     
     delta = 2*np.exp(-2*N*eps**2/maxe**2)+np.exp(-2*na*eps**2/maxe**2)
     conf = 1-2*delta
+    print('delta revbin: %s' % delta)
 
     exp=[LB,UB]
     return exp, lower_prob, conf
@@ -574,7 +591,7 @@ res=f0(sent,failed,coin,m)
 final_time=(time.time()-start_time)
 print("TOTAL elapsed time 1M elems  %s seconds -------        " % final_time)
 
-eps=0.00005
+eps=0.005
 maxe=1
 exp, lower_prob,conf=compute_statistics_brp(res, eps, maxe)
 
@@ -644,7 +661,7 @@ res=f0(sent,failed,coin,m)
 final_time=(time.time()-start_time)
 print("TOTAL elapsed time 1M elems  %s seconds -------        " % final_time)
 
-eps=0.00005
+eps=0.005
 maxe=1
 exp, lower_prob,conf=compute_statistics_brp(res, eps, maxe)
 
@@ -704,7 +721,7 @@ res=f0(sent,failed,coin,m)
 final_time=(time.time()-start_time)
 print("TOTAL elapsed time 1M elems  %s seconds -------        " % final_time)
 
-eps=0.00005
+eps=0.005
 maxe=1
 exp, lower_prob,conf=compute_statistics_brp(res, eps, maxe)
 
@@ -773,7 +790,7 @@ res=f0(sent,maxsent,failed,coin,m)
 final_time=(time.time()-start_time)
 print("TOTAL elapsed time 1M  elem %s seconds -------        " % final_time)
 
-eps=0.0005
+eps=0.005
 maxe=1
 exp, lower_prob,conf=compute_statistics_brp_finite_family(res, eps, maxe)
 
@@ -836,7 +853,7 @@ res=f0(x,coin,m)
 final_time=(time.time()-start_time)
 print("TOTAL elapsed time 1  elem %s seconds -------        " % final_time)
 
-eps=0.00005
+eps=0.005
 maxe=1
 exp, lower_prob,conf=compute_statistics_my_chain_5(res, eps, maxe)
 
@@ -902,7 +919,7 @@ res=f0(a,b,coin,m)
 final_time=(time.time()-start_time)
 print("TOTAL elapsed time 1M  elem %s seconds -------        " % final_time)
 
-eps=0.00005
+eps=0.005
 maxe=1
 exp, lower_prob,conf=compute_statistics_my_grid_small(res, eps, maxe)
 
@@ -944,7 +961,7 @@ def f0(x,y,z,coin,m):
     def body1(x,y,z,coin,m):
         res = tf.where(((x > 0) & (x < y)) & tf.greater(m,0.0),tf.concat(body_f1(x,y,z,coin,m),axis=0),tf.concat((x,y,z,coin,m),axis=0))
         return tuple([res[tf.newaxis,j] for j in range(5)]) # slicing tensor res
-    x,y,z,coin,m=tf.while_loop(lambda *_: True, body1, (x,y,z,coin,m), maximum_iterations=10)
+    x,y,z,coin,m=tf.while_loop(lambda *_: True, body1, (x,y,z,coin,m), maximum_iterations=20)
     m=tf.where(tf.logical_or(tf.logical_not((x > 0) & (x < y)) , tf.equal(m,0.0)),  m * tf.cast(True,tf.float32), np.NaN)
     return x,y,z,coin,m
 
@@ -972,7 +989,7 @@ res=f0(x,y,z,coin,m)
 final_time=(time.time()-start_time)
 print("TOTAL elapsed time 1M  elem %s seconds -------        " % final_time)
 
-eps=0.0005
+eps=0.005
 maxe=1
 exp, lower_prob,conf=compute_statistics_gambler(res, eps, maxe)
 
@@ -1037,7 +1054,7 @@ res=f0(z,flip,coin,m)
 final_time=(time.time()-start_time)
 print("TOTAL elapsed time 1M  elem %s seconds -------        " % final_time)
 
-eps=0.0005
+eps=0.005
 maxe=1
 exp, lower_prob,conf=compute_statistics_geo0(res, eps, maxe)
 
@@ -1065,7 +1082,7 @@ res=f0(z,flip,coin,m)
 final_time=(time.time()-start_time)
 print("TOTAL elapsed time 1M  elem %s seconds -------        " % final_time)
 
-eps=0.0005
+eps=0.005
 maxe=1
 exp, lower_prob,conf=compute_statistics_geo0_1(res, eps, maxe, z)
 
@@ -1189,8 +1206,6 @@ exp, lower_prob,conf=compute_statistics_die_cond(res, eps, maxe)
 print("exp %s" % exp)
 # central_value = (exp[0] + exp[1]) / 2;
 # print("central value %s" % central_value)
-print('exit')
-exit()
 
 #---------------------------------- Example: PrinSys ----------------------------
 
@@ -1257,7 +1272,7 @@ res=f0(x,coin,m)
 final_time=(time.time()-start_time)
 print("TOTAL elapsed time 1M  elem %s seconds -------        " % final_time)
 
-eps=0.0005
+eps=0.005
 maxe=1
 exp, lower_prob,conf=compute_statistics_PrinSys(res, eps, maxe)
 
@@ -1297,7 +1312,7 @@ def f0(x,z,coin,m):
     def body1(x,z,coin,m):
         res = tf.where((x > 0) & tf.greater(m,0.0),tf.concat(body_f1(x,z,coin,m),axis=0),tf.concat((x,z,coin,m),axis=0))
         return tuple([res[tf.newaxis,j] for j in range(4)]) # slicing tensor res
-    x,z,coin,m=tf.while_loop(lambda *_: True, body1, (x,z,coin,m), maximum_iterations=10)
+    x,z,coin,m=tf.while_loop(lambda *_: True, body1, (x,z,coin,m), maximum_iterations=20)
     m=tf.where(tf.logical_or(tf.logical_not(x > 0) , tf.equal(m,0.0)),  m * tf.cast(True,tf.float32), np.NaN)
     return x,z,coin,m
 
@@ -1323,7 +1338,7 @@ res=f0(x,z,coin,m)
 final_time=(time.time()-start_time)
 print("TOTAL elapsed time 1M  elem %s seconds -------        " % final_time)
 
-eps=0.0005
+eps=0.005
 maxe=1
 exp, lower_prob,conf=compute_statistics_RevBin_1(res, eps, maxe, x, z)
 
@@ -1390,7 +1405,7 @@ res=f0(x,n,coin,m)
 final_time=(time.time()-start_time)
 print("TOTAL elapsed time 1M  elem %s seconds -------        " % final_time)
 
-eps=0.0005
+eps=0.005
 maxe=1
 prop=compute_statistics_sprdwalk(res, eps, maxe)
 
@@ -1411,9 +1426,12 @@ xlist=['y']
 
 @tf.function(input_signature=[tf.TensorSpec(shape=None, dtype=tf.float32),tf.TensorSpec(shape=None, dtype=tf.float32)])
 def f0(y,m):
-    y+=tfd.Uniform(low=tf.zeros(tf.shape(y))).sample()
-    y+=tfd.Uniform(low=tf.zeros(tf.shape(y))).sample()
-    y+=tfd.Uniform(low=tf.zeros(tf.shape(y))).sample()
+    probs = tf.constant([1/11] * 11, dtype=tf.float32)
+    outcomes = tf.constant([0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1], dtype=tf.float32)
+    d = tfd.FiniteDiscrete(outcomes, probs)
+    y+=d.sample(tf.shape(y))
+    y+=d.sample(tf.shape(y))
+    y+=d.sample(tf.shape(y))
     return y,m
 
 var('y')
@@ -1434,7 +1452,7 @@ res=f0(y,m)
 final_time=(time.time()-start_time)
 print("TOTAL elapsed time 1M  elem %s seconds -------        " % final_time)
 
-eps=0.0005
+eps=0.005
 maxe=1
 exp, lower_prob,conf=compute_statistics_normal(res, eps, maxe)
 

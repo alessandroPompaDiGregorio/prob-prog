@@ -1,11 +1,10 @@
 This repository contains the experiments for my thesis: A comparative analysis of verification techniques for probabilistic programs.
-
-For more details regarding the tools that I have used, visit:
+For more details regarding the tools that I have used, you can visit:
 - https://github.com/moves-rwth/cegispro2
 - https://github.com/Luisa-unifi/probabilistic_programming/blob/main/TSI.py
 ## TSI
 
-The value of eps is 0.005. This allows to obtain a delta which is less than 0.001 (often much less then 0.001)
+The value of eps is 0.005. This allows to obtain a delta which is less than 0.001 (often much less then 0.001), with the only exception of *die_conditioning* which produces a delta of approximately 0.015. This exception is justified by the fact that there is an observation in the program witnessing a rare event ($p\simeq 0.083$). Nonetheless, the TSI exp captures the true expected value.
 
 | Program name      | TSI time | TSI exp          | t (maximum iterations for TSI) | N (tensor dimensions) | Additional details                                                                                                  |
 | ----------------- | -------- | ---------------- | ------------------------------ | --------------------- | ------------------------------------------------------------------------------------------------------------------- |
@@ -19,7 +18,7 @@ The value of eps is 0.005. This allows to obtain a delta which is less than 0.00
 | geo0              | 0.64     | \[4.954, 4.964\] | 10                             | $10^6$                | $\mathbb{E}[z]=5$                                                                                                   |
 | geo0              | 0.64     | \[3.952, 3.962\] | 20                             | $10^6$                | $\mathbb{E}[z]=z+4$; TSI exp represents z_final - z_initial. Initially z is a tensor of random values in $[0,10^6]$ |
 | geo0_obs          | 0.65     | [6.906, 6.916]   | 20                             | $10^6$                | Contains observe. $\mathbb{E}[z]=7$                                                                                 |
-| die_conditioning  | 0.04     | [4.997, 5.007]   | -                              | $10^6$                | Contains observe.                                                                                                   |
+| die_conditioning  | 0.04     | [4.997, 5.007]   | -                              | $10^6$                | Contains observe. $\mathbb{E}[d_1]=5$                                                                               |
 | PrinSys           | 0.41     | [0.995, 1.005]   | 10                             | $10^6$                |                                                                                                                     |
 | RevBin            | 0.33     | [11.763, 11.773] | 10                             | $10^6$                |                                                                                                                     |
 | sprdwalk          | 0.31     | 0.986897         | 10                             | $10^6$                | TSI used to calculate proportion of terminated/failed executions.                                                   |

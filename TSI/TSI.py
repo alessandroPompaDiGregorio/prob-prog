@@ -508,16 +508,29 @@ def compute_statistics_RevBin_1(res, eps, maxe, x_original, z_original):
     return exp, lower_prob, conf
 
 def compute_statistics_sprdwalk(res, eps, maxe):
-    m = res[3][0]
+    m = res[4][0]
     
     N=m.shape[0]
+    tick = res[3][0]
     
     term = (m==1.0)
     fail = (m==0.0)
-    
-    term_or_fail_proportion = (term.numpy().sum() + fail.numpy().sum()) / N
+    live = tf.logical_not(term|fail)
+    lt2=    term|live
+    na=live.numpy().sum()+term.numpy().sum()
 
-    return term_or_fail_proportion
+    LB=tick[lt2].numpy().sum()/na-eps     
+    UB=tick[lt2].numpy().sum()/na+eps
+
+    lower_prob=term.numpy().sum()/(term.numpy().sum()+live.numpy().sum())
+
+    delta = 2*np.exp(-2*N*eps**2/maxe**2)+np.exp(-2*na*eps**2/maxe**2)
+    conf = 1-2*delta
+    print('delta sprdwalk: %s' % delta)
+
+    exp=[LB,UB]
+
+    return exp, lower_prob, conf
 
 def compute_expected_value_approx(var, mask):
     return var[mask==1].numpy().sum()/(mask==1).numpy().sum() 
@@ -1352,46 +1365,48 @@ print("exp %s" % exp)
 
 print("---------------- sprdwalk ----------------")
 
-var('x n coin')
+var('x n coin tick')
 
-S_s = whl(x<n,seq(draw(coin,B(0.5)),ite(coin==1,setx(x,x),setx(x,x+1))),true)
-xlist=['x', 'n', 'coin']
+S_s = whl(x<n,seq(setx(tick,tick+1),draw(coin,B(0.5)),ite(coin==1,setx(x,x),setx(x,x+1))),true)
+xlist=['x', 'n', 'coin', 'tick']
 # tr_S=translate_sc(S_s,xlist)
 # print(tr_S)
 
-@tf.function(input_signature=[tf.TensorSpec(shape=None, dtype=tf.float32),tf.TensorSpec(shape=None, dtype=tf.float32),tf.TensorSpec(shape=None, dtype=tf.float32),tf.TensorSpec(shape=None, dtype=tf.float32)])
-def f0(x,n,coin,m):
+@tf.function(input_signature=[tf.TensorSpec(shape=None, dtype=tf.float32),tf.TensorSpec(shape=None, dtype=tf.float32),tf.TensorSpec(shape=None, dtype=tf.float32),tf.TensorSpec(shape=None, dtype=tf.float32),tf.TensorSpec(shape=None, dtype=tf.float32)])
+def f0(x,n,coin,tick,m):
     B_probs = tf.zeros(shape=tf.shape(coin))
     B_probs += 0.5
-    def body_f1(x,n,coin,m):
+    def body_f1(x,n,coin,tick,m):
+        tick+=1
         coin = tfd.Bernoulli(probs=B_probs).sample()
         coin = tf.cast(coin,dtype=tf.float32)
-        def f2(x,n,coin,m):
+        def f2(x,n,coin,tick,m):
             x=x
-            return x,n,coin,m
-        def f3(x,n,coin,m):
+            return x,n,coin,tick,m
+        def f3(x,n,coin,tick,m):
             x=x + 1
-            return x,n,coin,m
+            return x,n,coin,tick,m
         mask = coin==1.0
-        res=tf.where(mask, tf.concat(f2(x,n,coin,m),axis=0), tf.concat(f3(x,n,coin,m),axis=0))
-        x,n,coin,m = tuple(res[tf.newaxis,j] for j in range(4)) # slicing tensor res
-        return x,n,coin,m
-    def body1(x,n,coin,m):
-        res = tf.where((x < n) & tf.greater(m,0.0),tf.concat(body_f1(x,n,coin,m),axis=0),tf.concat((x,n,coin,m),axis=0))
-        return tuple([res[tf.newaxis,j] for j in range(4)]) # slicing tensor res
-    x,n,coin,m=tf.while_loop(lambda *_: True, body1, (x,n,coin,m), maximum_iterations=10)
+        res=tf.where(mask, tf.concat(f2(x,n,coin,tick,m),axis=0), tf.concat(f3(x,n,coin,tick,m),axis=0))
+        x,n,coin,tick,m = tuple(res[tf.newaxis,j] for j in range(5)) # slicing tensor res
+        return x,n,coin,tick,m
+    def body1(x,n,coin,tick,m):
+        res = tf.where((x < n) & tf.greater(m,0.0),tf.concat(body_f1(x,n,coin,tick,m),axis=0),tf.concat((x,n,coin,tick,m),axis=0))
+        return tuple([res[tf.newaxis,j] for j in range(5)]) # slicing tensor res
+    x,n,coin,tick,m=tf.while_loop(lambda *_: True, body1, (x,n,coin,tick,m), maximum_iterations=10)
     m=tf.where(tf.logical_or(tf.logical_not(x < n) , tf.equal(m,0.0)),  m * tf.cast(True,tf.float32), np.NaN)
-    return x,n,coin,m
+    return x,n,coin,tick,m
 
-var('x n coin')
+var('x n coin tick')
 
 N=1 # Warm up 
 x = tf.zeros((1,N))
 n = tf.random.uniform(shape=(1,N),maxval=5)
 coin = tf.zeros((1,N))
+tick = tf.zeros((1,N))
 m = tf.constant(1.0,shape=(1,N))
 start_time=time.time()
-res=f0(x,n,coin,m)
+res=f0(x,n,coin,tick,m)
 final_time=(time.time()-start_time)
 print("TOTAL elapsed time 1  elem %s seconds -------        " % final_time)
 
@@ -1399,17 +1414,19 @@ N=10**6
 x = tf.constant(2.0,shape=(1,N))
 n = tf.random.uniform(shape=(1,N),maxval=5)
 coin = tf.zeros((1,N))
+tick = tf.zeros((1,N))
 m = tf.constant(1.0,shape=(1,N))
 start_time=time.time()
-res=f0(x,n,coin,m)
+res=f0(x,n,coin,tick,m)
 final_time=(time.time()-start_time)
 print("TOTAL elapsed time 1M  elem %s seconds -------        " % final_time)
 
 eps=0.005
 maxe=1
-prop=compute_statistics_sprdwalk(res, eps, maxe)
+exp,lower_prob,conf=compute_statistics_sprdwalk(res, eps, maxe)
 
-print("prop %s" % prop)
+print("lower prob %s" % lower_prob)
+print("exp %s" % exp)
 
 #-------------------------------------  MY EXAMPLE  ------------------------------------
 

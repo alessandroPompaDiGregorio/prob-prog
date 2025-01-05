@@ -100,7 +100,7 @@ In this table we verify the lower bounds given by TSI with cegispro2. TO=5min
 Taken from the original program
 ### my_chain_5
 
-0 to 4 increments of x, each with probability $1 - \frac15$ and one c:=1 assignment, with probability $\frac15$
+0 to 4 increments of x, each with probability $1 - \frac15$ and one c:=1 assignment, with probability $\frac15$. So:
 $$\frac15\sum_{i=0}^{4}\left(1 - \frac15\right)^i$$ 
 ### grid_small
 

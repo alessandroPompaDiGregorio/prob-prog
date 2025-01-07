@@ -10,9 +10,9 @@ The programs that do not contain a while loop, do not have a maximum number of i
 | Program name      | TSI time | TSI exp                              | t (maximum iterations for TSI) | N (tensor dimensions) | Additional details                                                                                                  |
 | ----------------- | -------- | ------------------------------------ | ------------------------------ | --------------------- | ------------------------------------------------------------------------------------------------------------------- |
 | brp_10            | 3.18     | [0.004, 0.014]                       | 100                            | $10^6$                |                                                                                                                     |
-| brp               | 0.36     | [-0.005, 0.005]                      | 10                             | $10^6$                | $p=0.0007997$                                                                                                       |
-| brp               | 3.27     | [-0.005, 0.005]                      | 100                            | $10^6$                | $p=0.0007997$                                                                                                       |
-| brp_finite_family | 0.42     | [-0.005, 0.005]                      | 10                             | $10^6$                | $p=0.0007997$                                                                                                       |
+| brp               | 0.36     | [-0.005, 0.005]                      | 10                             | $10^6$                |                                                                                                                     |
+| brp               | 3.27     | [-0.005, 0.005]                      | 100                            | $10^6$                |                                                                                                                     |
+| brp_finite_family | 0.42     | [-0.005, 0.005]                      | 10                             | $10^6$                |                                                                                                                     |
 | my_chain_5        | 0.26     | [0.667, 0.677]                       | 10                             | $10^6$                | $p=0.67232$                                                                                                         |
 | grid_small        | 0.63     | [-0.003, 0.006]                      | 20                             | $10^6$                | $p=\frac{1}{2^{10}}= 0.0009765625$                                                                                  |
 | gambler           | 0.88     | \[0.494, 0.504\]                     | 20                             | $10^6$                | $p=\frac12=0.5$                                                                                                     |
@@ -34,8 +34,8 @@ In this table we verify the upper bounds given by TSI using cegispro2. TO=5min
 | Program name      | cegispro2 total time | Number of CTIs | POSTEXP                                 | PROP                                   | Additional details                         |
 | ----------------- | -------------------- | -------------- | --------------------------------------- | -------------------------------------- | ------------------------------------------ |
 | brp_10            | 167.71               | 95             | [failed=10] + [not (failed=10)]*0       | [failed=0 & sent=0]*0.014              |                                            |
-| brp               | 3.54                 | 36             | [failed=10] + [not (failed=10)]*0       | [failed=0 & sent=0]*0.05               | $p=0.0007997$                              |
-| brp_finite_family | 3.78                 | 53             | [failed=5] + [not (failed=5)]*0         | [failed<=0 & sent<=0]*0.005            | $p=0.0007997$                              |
+| brp               | 3.54                 | 36             | [failed=10] + [not (failed=10)]*0       | [failed=0 & sent=0]*0.05               |                                            |
+| brp_finite_family | 3.78                 | 53             | [failed=5] + [not (failed=5)]*0         | [failed<=0 & sent<=0]*0.005            |                                            |
 | my_chain_5        | 0.32                 | 5              | [c=1] + [not (c=1)]*0                   | [c=0<br> & x=0]*0.677                  | $p=0.67232$                                |
 | grid_small        | 17.2                 | 37             | [a=0 & b=10] + [not (a=0 & b=10)]*0     | [a<=0 & b<=0]*0.006                    | $p=\frac{1}{2^{10}}= 0.0009765625$         |
 | gambler           | 0.16                 | 11             | [x=4] + [not (x=4)]*0                   | [x=2 & y=4 & z=0]*0.504                | $p=\frac12=0.5$                            |
@@ -57,8 +57,8 @@ In this table we verify the lower bounds given by TSI with cegispro2. TO=5min
 | Program name      | cegispro2 total time | Number of CTIs | POSTEXP                             | PROP                                   | Additional details                         |
 | ----------------- | -------------------- | -------------- | ----------------------------------- | -------------------------------------- | ------------------------------------------ |
 | brp_10            | 171.95               | 43             | [failed=10] + [not (failed=10)]*0   | [failed=0 & sent=0]*0.004              |                                            |
-| brp               | 0.37                 | 1              | [failed=10] + [not (failed=10)]*0   | [failed=0 & sent=0]*0                  | $p=0.0007997$                              |
-| brp_finite_family | 0.41                 | 1              | [failed=5] + [not (failed=5)]*0     | [failed<=0 & sent<=0]*                 | $p=0.0007997$                              |
+| brp               | 0.37                 | 1              | [failed=10] + [not (failed=10)]*0   | [failed=0 & sent=0]*0                  |                                            |
+| brp_finite_family | 0.41                 | 1              | [failed=5] + [not (failed=5)]*0     | [failed<=0 & sent<=0]*                 |                                            |
 | my_chain_5        | 3.64                 | 5              | [c=1] + [not (c=1)]*0               | [c=0<br> & x=0]*0.667                  | $p=0.67232$                                |
 | grid_small        | 0.31                 | 1              | [a=0 & b=10] + [not (a=0 & b=10)]*0 | [a<=0 & b<=0]*0                        | $p=\frac{1}{2^{10}}= 0.0009765625$         |
 | gambler           | TO                   | -              | [x=4] + [not (x=4)]*0               | [x=2 & y=4 & z=0]*0.494                | $p=\frac12=0.5$                            |
@@ -77,8 +77,8 @@ In this table we verify the lower bounds given by TSI with cegispro2. TO=5min
 | Program name      | TSI time    | TSI exp                              | t (maximum iterations for TSI) | N (tensor dimensions) | cegispro2 total time | Number of CTIs | cegispro2 total time (cdb sub-invariant) | Number of CTIs (cdb sub-invariant) | Bound aimed to prove with cegispro2 | Proved?          | Additional details                                                                                                                    |
 | ----------------- | ----------- | ------------------------------------ | ------------------------------ | --------------------- | -------------------- | -------------- | ---------------------------------------- | ---------------------------------- | ----------------------------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
 | brp_10            | 3.18        | [0.004, 0.014]                       | 100                            | $10^6$                | 167.71               | 95             | 171.95                                   | 43                                 | [0.004,0.014]                       | yes              |                                                                                                                                       |
-| brp               | 0.36 / 3.27 | [-0.005, 0.005]                      | 10 / 100                       | $10^6$                | 3.54                 | 36             | 0.37                                     | 1                                  | [0,0.005]                           | yes              | $p=0.0007997$                                                                                                                         |
-| brp_finite_family | 0.42        | [-0.005, 0.005]                      | 10                             | $10^6$                | 3.78                 | 53             | 0.41                                     | 1                                  | [0,0.005]                           | yes              | $p=0.0007997$                                                                                                                         |
+| brp               | 0.36 / 3.27 | [-0.005, 0.005]                      | 10 / 100                       | $10^6$                | 3.54                 | 36             | 0.37                                     | 1                                  | [0,0.005]                           | yes              |                                                                                                                                       |
+| brp_finite_family | 0.42        | [-0.005, 0.005]                      | 10                             | $10^6$                | 3.78                 | 53             | 0.41                                     | 1                                  | [0,0.005]                           | yes              |                                                                                                                                       |
 | my_chain_5        | 0.26        | [0.667, 0.677]                       | 10                             | $10^6$                | 0.32                 | 5              | 3.64                                     | 5                                  | [0.667,0.677]                       | yes              | $p=0.67232$                                                                                                                           |
 | grid_small        | 0.63        | [-0.003, 0.006]                      | 20                             | $10^6$                | 17.2                 | 37             | 0.31                                     | 1                                  | [0,0.006]                           | yes              | $p=\frac{1}{2^{10}}= 0.0009765625$                                                                                                    |
 | gambler           | 0.88        | \[0.494, 0.504\]                     | 20                             | $10^6$                | 0.16                 | 11             | TO                                       | -                                  | [0.494,0.504]                       | upper bound only | $p=\frac12=0.5$                                                                                                                       |
@@ -95,12 +95,9 @@ In this table we verify the lower bounds given by TSI with cegispro2. TO=5min
 
 ## Explanation of exact probabilities / expected values
 
-### brp / brp_finite_family
-
-Taken from the original program
 ### my_chain_5
 
-0 to 4 increments of x, each with probability $1 - \frac15$ and one c:=1 assignment, with probability $\frac15$. So:
+0 to 4 increments of x, each with probability $1 - \frac15$ and one c:=1 assignment, with probability $\frac15$
 $$\frac15\sum_{i=0}^{4}\left(1 - \frac15\right)^i$$ 
 ### grid_small
 
@@ -125,7 +122,7 @@ Clearly, when starting in a state that violates the loop guard, the final state 
 
 The probability can be calculated by means of convolutions. In particular this Matlab code provides the exact probability $p=0.5342$:
 
-```
+```Matlab
 probs = repelem(1/11,11);
 
 conv1 = conv2(probs,probs);

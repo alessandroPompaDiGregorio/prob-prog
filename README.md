@@ -25,7 +25,7 @@ The programs that do not contain a while loop, do not have a maximum number of i
 | sprdwalk          | 0.31     | [2.365,2.375]; lower prob = 0.986897 | 10                             | $10^6$                | exp represents expected runtime. Lower prob is term/(term+live)                                                     |
 | normal            | 0.02     | [0.527, 0.537]                       | -                              | $10^6$                | $p=0.5342$                                                                                                          |
 | Monty Hall        | 0.39     | [0.661, 0.671]                       | -                              | $10^6$                | Contains an observe statement; $p=\frac23$                                                                          |
-| Burglar Alarm     | 0.08     | [0.024, 0.034]                       | -                              | $10^6$                | Contains an observe statement                                                                                       |
+| Burglar Alarm     | 0.08     | [0.024, 0.034]                       | -                              | $10^6$                | Contains an observe statement; $p=0.029$                                                                            |
 
 ## cegispro2
 
@@ -48,7 +48,7 @@ In this table we verify the upper bounds given by TSI using cegispro2. TO=5min
 | sprdwalk          | 0.04                 | 3              | PAST (Positive Almost Sure Termination) | Initial states: [x < n]                |                                            |
 | normal            | 76.66                | 2              | [pos=0] + [not (pos=0)]*0               | [flag=0 & coeff=0 & y=0 & pos=0]*0.537 | $p=0.5342$                                 |
 | Monty Hall        | 9.05                 | 1              | [win=1] + [not (win=1)]*0               | [flag=0]*0.671                         | Contains an observe statement; $p=\frac23$ |
-| Burglar Alarm     | 14.29                | 10             | [burglary=1] + [not (burglary=1)]*0     | [flag=0]*0.034                         | Contains an observe statement              |
+| Burglar Alarm     | 14.29                | 10             | [burglary=1] + [not (burglary=1)]*0     | [flag=0]*0.034                         | Contains an observe statement; $p=0.029$   |
 
 ## cegispro2 sub-invariants with cdb
 
@@ -70,7 +70,7 @@ In this table we verify the lower bounds given by TSI with cegispro2. TO=5min
 | RevBin            | 0.19                 | 5              | z                                   | [x=5 & z=3]*11.763                     |                                            |
 | normal            | TO                   | -              | [pos=0] + [not (pos=0)]*0           | [flag=0 & coeff=0 & y=0 & pos=0]*0.527 | $p=0.5342$                                 |
 | Monty Hall        | 239.52               | 1              | [win=1] + [not (win=1)]*0           | [flag=0]*0.661                         | Contains an observe statement; $p=\frac23$ |
-| Burglar Alarm     | TO                   | -              | [burglary=1] + [not (burglary=1)]*0 | [flag=0]*0.024                         | Contains an observe statement              |
+| Burglar Alarm     | TO                   | -              | [burglary=1] + [not (burglary=1)]*0 | [flag=0]*0.024                         | Contains an observe statement; $p=0.029$   |
 
 ## Summary
 
@@ -91,7 +91,7 @@ In this table we verify the lower bounds given by TSI with cegispro2. TO=5min
 | sprdwalk          | 0.31        | [2.365,2.375]; lower prob = 0.986897 | 10                             | $10^6$                | 0.04                 | 3              | -                                        | -                                  | -                                   | -                | **TSI**: exp represents expected runtime. Lower prob is term/(term+live). **cegispro2**: used to prove PAST (initial states: [x < n]) |
 | normal            | 0.02        | [0.527, 0.537]                       | -                              | $10^6$                | 76.66                | 2              | TO                                       | -                                  | [0.527,0.537]                       | upper bound only | $p=0.5342$                                                                                                                            |
 | Monty Hall        | 0.39        | [0.661, 0.671]                       | -                              | $10^6$                | 9.05                 | 1              | 239.52                                   | 1                                  | [0.661,0.671]                       | yes              | Contains an observe statement; $p=\frac23$                                                                                            |
-| Burglar Alarm     | 0.08        | [0.024, 0.034]                       | -                              | $10^6$                | 14.29                | 10             | TO                                       | -                                  | [0.024,0.034]                       | upper bound only | Contains an observe statement                                                                                                         |
+| Burglar Alarm     | 0.08        | [0.024, 0.034]                       | -                              | $10^6$                | 14.29                | 10             | TO                                       | -                                  | [0.024,0.034]                       | upper bound only | Contains an observe statement; $p=0.029$                                                                                              |
 
 ## Explanation of exact probabilities / expected values
 
@@ -135,3 +135,7 @@ disp(sum(c2(1:16)));
 ### Monty Hall
 
 It is well known that $p=\frac23$
+
+### Burglar alarm
+
+Precise value taken from the original TSI paper.

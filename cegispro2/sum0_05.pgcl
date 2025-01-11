@@ -1,9 +1,0 @@
-# python3 -m cegispro2.cmd sum0_05.pgcl --post "x" --prop "[n=8]*(x+18)+[not (0<n)]*x"
-
-nat n;
-nat x;
-
-while(0 < n){
-    {x:=x+n}[0.5]{skip};
-    n := n - 1;
-}

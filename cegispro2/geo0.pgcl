@@ -1,9 +1,9 @@
 # Expected value of z is 1-p/p. Since p=0.2, E[z] = 5
-# python3 -m cegispro2.cmd geo0.pgcl --post "z" --prop "[z=1 & flip=0]*5"
-# python3 -m cegispro2.cmd geo0.pgcl --post "z" --prop "[flip=0]*(z+4)"
+# python3 -m cegispro2.cmd geo0.pgcl --post "z" --prop "[z=1 & flip=0]*5.007"
+# python3 -m cegispro2.cmd geo0.pgcl --post "z" --prop "[flip=0]*(z+4.004)"
 
-# python3 -m cegispro2.cmd geo0.pgcl --post "z" --prop "[z=1 & flip=0]*4.954" --invarianttype sub --cdb
-# python3 -m cegispro2.cmd geo0.pgcl --post "z" --prop "[flip=0]*(z+3.952)" --invarianttype sub --cdb
+# python3 -m cegispro2.cmd geo0.pgcl --post "z" --prop "[z=1 & flip=0]*4.997" --invarianttype sub --cdb
+# python3 -m cegispro2.cmd geo0.pgcl --post "z" --prop "[flip=0]*(z+3.994)" --invarianttype sub --cdb
 
 nat z;          # initially 1
 nat flip [0,1]; # initially 0

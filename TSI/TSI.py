@@ -1041,7 +1041,7 @@ def f0(z,flip,coin,m):
     def body1(z,flip,coin,m):
         res = tf.where((tf.equal(flip,0.0)) & tf.greater(m,0.0),tf.concat(body_f1(z,flip,coin,m),axis=0),tf.concat((z,flip,coin,m),axis=0))
         return tuple([res[tf.newaxis,j] for j in range(4)]) # slicing tensor res
-    z,flip,coin,m=tf.while_loop(lambda *_: True, body1, (z,flip,coin,m), maximum_iterations=20)
+    z,flip,coin,m=tf.while_loop(lambda *_: True, body1, (z,flip,coin,m), maximum_iterations=80)
     m=tf.where(tf.logical_or(tf.logical_not(tf.equal(flip,0.0)) , tf.equal(m,0.0)),  m * tf.cast(True,tf.float32), np.NaN)
     return z,flip,coin,m
 
@@ -1134,7 +1134,7 @@ def f0(z,flip,coin,m):
     def body1(z,flip,coin,m):
         res = tf.where(tf.equal(flip,0.0) & tf.greater(m,0.0),tf.concat(body_f1(z,flip,coin,m),axis=0),tf.concat((z,flip,coin,m),axis=0))
         return tuple([res[tf.newaxis,j] for j in range(4)]) # slicing tensor res
-    z,flip,coin,m=tf.while_loop(lambda *_: True, body1, (z,flip,coin,m), maximum_iterations=20)
+    z,flip,coin,m=tf.while_loop(lambda *_: True, body1, (z,flip,coin,m), maximum_iterations=80)
     m=tf.where(tf.logical_or(tf.logical_not(tf.equal(flip,0.0)) , tf.equal(m,0.0)),  m * tf.cast(tf.greater(z,2),tf.float32), np.NaN)
     return z,flip,coin,m
 
@@ -1325,7 +1325,7 @@ def f0(x,z,coin,m):
     def body1(x,z,coin,m):
         res = tf.where((x > 0) & tf.greater(m,0.0),tf.concat(body_f1(x,z,coin,m),axis=0),tf.concat((x,z,coin,m),axis=0))
         return tuple([res[tf.newaxis,j] for j in range(4)]) # slicing tensor res
-    x,z,coin,m=tf.while_loop(lambda *_: True, body1, (x,z,coin,m), maximum_iterations=20)
+    x,z,coin,m=tf.while_loop(lambda *_: True, body1, (x,z,coin,m), maximum_iterations=100)
     m=tf.where(tf.logical_or(tf.logical_not(x > 0) , tf.equal(m,0.0)),  m * tf.cast(True,tf.float32), np.NaN)
     return x,z,coin,m
 

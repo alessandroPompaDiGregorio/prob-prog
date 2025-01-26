@@ -2,96 +2,27 @@ This repository contains the experiments for my thesis: A comparative analysis o
 For more details regarding the tools that I have used, you can visit:
 - https://github.com/moves-rwth/cegispro2
 - https://github.com/Luisa-unifi/probabilistic_programming/blob/main/TSI.py
-## TSI
+
+## Summary
 
 The value of eps is 0.005. This allows to obtain a delta which is less than 0.001 (often much less then 0.001), with the only exception of *die_conditioning* which produces a delta of approximately 0.015. This exception is justified by the fact that there is an observation in the program witnessing a rare event ($p\simeq 0.083$). Nonetheless, the TSI exp captures the true expected value.
 The programs that do not contain a while loop, do not have a maximum number of iterations, this is indicated with a dash in the corresponding cell.
 
-| Program name      | TSI time | TSI exp                              | t (maximum iterations for TSI) | N (tensor dimensions) | Additional details                                                                                                  |
-| ----------------- | -------- | ------------------------------------ | ------------------------------ | --------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| brp_10            | 3.18     | [0.004, 0.014]                       | 100                            | $10^6$                |                                                                                                                     |
-| brp               | 0.36     | [-0.005, 0.005]                      | 10                             | $10^6$                |                                                                                                                     |
-| brp               | 3.27     | [-0.005, 0.005]                      | 100                            | $10^6$                |                                                                                                                     |
-| brp_finite_family | 0.42     | [-0.005, 0.005]                      | 10                             | $10^6$                |                                                                                                                     |
-| my_chain_5        | 0.26     | [0.667, 0.677]                       | 10                             | $10^6$                | $p=0.67232$                                                                                                         |
-| grid_small        | 0.63     | [-0.003, 0.006]                      | 20                             | $10^6$                | $p=\frac{1}{2^{10}}= 0.0009765625$                                                                                  |
-| gambler           | 0.88     | \[0.494, 0.504\]                     | 20                             | $10^6$                | $p=\frac12=0.5$                                                                                                     |
-| geo0              | 2.94     | \[4.997, 5.007\]                     | 80                             | $10^6$                | $\mathbb{E}[z]=5$                                                                                                   |
-| geo0              | 2.97     | \[3.994, 4.004\]                     | 80                             | $10^6$                | $\mathbb{E}[z]=z+4$; TSI exp represents z_final - z_initial. Initially z is a tensor of random values in $[0,10^6]$ |
-| geo0_obs          | 2.88     | [6.998, 7.008]                       | 80                             | $10^6$                | Contains observe. $\mathbb{E}[z]=7$                                                                                 |
-| die_conditioning  | 0.04     | [4.997, 5.007]                       | -                              | $10^6$                | Contains observe. $\mathbb{E}[d_1]=5$                                                                               |
-| PrinSys           | 0.41     | [0.995, 1.005]                       | 10                             | $10^6$                | $p=1$                                                                                                               |
-| RevBin            | 0.33     | [12.996, 13.006]                     | 100                            | $10^6$                | $\mathbb{E}[z]=13$                                                                                                  |
-| sprdwalk          | 0.31     | [2.365,2.375]; lower prob = 0.986897 | 10                             | $10^6$                | exp represents expected runtime. Lower prob is term/(term+live)                                                     |
-| normal            | 0.02     | [0.527, 0.537]                       | -                              | $10^6$                | $p=0.5342$                                                                                                          |
-| Monty Hall        | 0.39     | [0.661, 0.671]                       | -                              | $10^6$                | Contains an observe statement; $p=\frac23$                                                                          |
-| Burglar Alarm     | 0.08     | [0.024, 0.034]                       | -                              | $10^6$                | Contains an observe statement; $p=0.029$                                                                            |
-
-## cegispro2
-
-In this table we verify the upper bounds given by TSI using cegispro2. TO=5min
-
-| Program name      | cegispro2 total time | Number of CTIs | POSTEXP                                 | PROP                                   | Additional details                         |
-| ----------------- | -------------------- | -------------- | --------------------------------------- | -------------------------------------- | ------------------------------------------ |
-| brp_10            | 167.71               | 95             | [failed=10] + [not (failed=10)]*0       | [failed=0 & sent=0]*0.014              |                                            |
-| brp               | 3.54                 | 36             | [failed=10] + [not (failed=10)]*0       | [failed=0 & sent=0]*0.05               |                                            |
-| brp_finite_family | 3.78                 | 53             | [failed=5] + [not (failed=5)]*0         | [failed<=0 & sent<=0]*0.005            |                                            |
-| my_chain_5        | 0.32                 | 5              | [c=1] + [not (c=1)]*0                   | [c=0<br> & x=0]*0.677                  | $p=0.67232$                                |
-| grid_small        | 17.2                 | 37             | [a=0 & b=10] + [not (a=0 & b=10)]*0     | [a<=0 & b<=0]*0.006                    | $p=\frac{1}{2^{10}}= 0.0009765625$         |
-| gambler           | 0.16                 | 11             | [x=4] + [not (x=4)]*0                   | [x=2 & y=4 & z=0]*0.504                | $p=\frac12=0.5$                            |
-| geo0              | 0.15                 | 5              | z                                       | [z=1 & flip=0]*5.007                   | $\mathbb{E}[z]=5$                          |
-| geo0              | 0.15                 | 5              | z                                       | [flip=0]*(z+4.004)                     | $\mathbb{E}[z]=z+4$                        |
-| geo0_obs          | 0.14                 | 5              | z                                       | [flip=0 & z=0]*7.008                   | Contains observe. $\mathbb{E}[z]=7$        |
-| die_conditioning  | 0.41                 | 4              | d1                                      | [flag=0]*5.005                         | Contains observe. $\mathbb{E}[d_1]=5$      |
-| PrinSys           | 0.18                 | 1              | [x=2] + [not (x=2)]*0                   | [x=2]*1.005                            | $p=1$                                      |
-| RevBin            | 0.08                 | 3              | z                                       | [x=5 & z=3]*13.006                     | $\mathbb{E}[z]=13$                         |
-| sprdwalk          | 0.04                 | 3              | PAST (Positive Almost Sure Termination) | Initial states: [x < n]                |                                            |
-| normal            | 76.66                | 2              | [pos=0] + [not (pos=0)]*0               | [flag=0 & coeff=0 & y=0 & pos=0]*0.537 | $p=0.5342$                                 |
-| Monty Hall        | 9.05                 | 1              | [win=1] + [not (win=1)]*0               | [flag=0]*0.671                         | Contains an observe statement; $p=\frac23$ |
-| Burglar Alarm     | 14.29                | 10             | [burglary=1] + [not (burglary=1)]*0     | [flag=0]*0.034                         | Contains an observe statement; $p=0.029$   |
-
-## cegispro2 sub-invariants with cdb
-
-In this table we verify the lower bounds given by TSI with cegispro2. TO=5min
-
-| Program name      | cegispro2 total time | Number of CTIs | POSTEXP                             | PROP                                   | Additional details                         |
-| ----------------- | -------------------- | -------------- | ----------------------------------- | -------------------------------------- | ------------------------------------------ |
-| brp_10            | 171.95               | 43             | [failed=10] + [not (failed=10)]*0   | [failed=0 & sent=0]*0.004              |                                            |
-| brp               | 0.37                 | 1              | [failed=10] + [not (failed=10)]*0   | [failed=0 & sent=0]*0                  |                                            |
-| brp_finite_family | 0.41                 | 1              | [failed=5] + [not (failed=5)]*0     | [failed<=0 & sent<=0]*                 |                                            |
-| my_chain_5        | 3.64                 | 5              | [c=1] + [not (c=1)]*0               | [c=0<br> & x=0]*0.667                  | $p=0.67232$                                |
-| grid_small        | 0.31                 | 1              | [a=0 & b=10] + [not (a=0 & b=10)]*0 | [a<=0 & b<=0]*0                        | $p=\frac{1}{2^{10}}= 0.0009765625$         |
-| gambler           | TO                   | -              | [x=4] + [not (x=4)]*0               | [x=2 & y=4 & z=0]*0.494                | $p=\frac12=0.5$                            |
-| geo0              | TO                   | -              | z                                   | [z=1 & flip=0]*4.997                   | $\mathbb{E}[z]=5$                          |
-| geo0              | 0.18                 | 2              | z                                   | [flip=0]*(z+3.994)                     | $\mathbb{E}[z]=z+4$                        |
-| geo0_obs          | TO                   | -              | z                                   | [flip=0 & z=0]*6.998                   | Contains observe. $\mathbb{E}[z]=7$        |
-| die_conditioning  | TO                   | -              | d1                                  | [flag=0]*4.995                         | Contains observe. $\mathbb{E}[d_1]=5$      |
-| PrinSys           | 0.26                 | 1              | [x=2] + [not (x=2)]*0               | [x=2]*0.995                            | $p=1$                                      |
-| RevBin            | 0.24                 | 3              | z                                   | [x=5 & z=3]*12.996                     | $\mathbb{E}[z]=13$                         |
-| normal            | TO                   | -              | [pos=0] + [not (pos=0)]*0           | [flag=0 & coeff=0 & y=0 & pos=0]*0.527 | $p=0.5342$                                 |
-| Monty Hall        | 239.52               | 1              | [win=1] + [not (win=1)]*0           | [flag=0]*0.661                         | Contains an observe statement; $p=\frac23$ |
-| Burglar Alarm     | TO                   | -              | [burglary=1] + [not (burglary=1)]*0 | [flag=0]*0.024                         | Contains an observe statement; $p=0.029$   |
-
-## Summary
-
-| Program name      | TSI time    | TSI exp                              | t (maximum iterations for TSI) | N (tensor dimensions) | cegispro2 total time | Number of CTIs | cegispro2 total time (cdb sub-invariant) | Number of CTIs (cdb sub-invariant) | Bound aimed to prove with cegispro2 | Proved?          | Additional details                                                                                                                    |
-| ----------------- | ----------- | ------------------------------------ | ------------------------------ | --------------------- | -------------------- | -------------- | ---------------------------------------- | ---------------------------------- | ----------------------------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| brp_10            | 3.18        | [0.004, 0.014]                       | 100                            | $10^6$                | 167.71               | 95             | 171.95                                   | 43                                 | [0.004,0.014]                       | yes              |                                                                                                                                       |
-| brp               | 0.36 / 3.27 | [-0.005, 0.005]                      | 10 / 100                       | $10^6$                | 3.54                 | 36             | 0.37                                     | 1                                  | [0,0.005]                           | yes              |                                                                                                                                       |
-| brp_finite_family | 0.42        | [-0.005, 0.005]                      | 10                             | $10^6$                | 3.78                 | 53             | 0.41                                     | 1                                  | [0,0.005]                           | yes              |                                                                                                                                       |
-| my_chain_5        | 0.26        | [0.667, 0.677]                       | 10                             | $10^6$                | 0.32                 | 5              | 3.64                                     | 5                                  | [0.667,0.677]                       | yes              | $p=0.67232$                                                                                                                           |
-| grid_small        | 0.63        | [-0.003, 0.006]                      | 20                             | $10^6$                | 17.2                 | 37             | 0.31                                     | 1                                  | [0,0.006]                           | yes              | $p=\frac{1}{2^{10}}= 0.0009765625$                                                                                                    |
-| gambler           | 0.88        | \[0.494, 0.504\]                     | 20                             | $10^6$                | 0.16                 | 11             | TO                                       | -                                  | [0.494,0.504]                       | upper bound only | $p=\frac12=0.5$                                                                                                                       |
-| geo0              | 2.94        | \[4.997, 5.007\]                     | 80                             | $10^6$                | 0.15                 | 5              | TO                                       | -                                  | \[4.997, 5.007\]                    | upper bound only | $\mathbb{E}[z]=5$                                                                                                                     |
-| geo0              | 2.97        | \[3.994, 4.004\]                     | 80                             | $10^6$                | 0.15                 | 5              | 0.18                                     | 2                                  | \[3.994, 4.004\]                    | yes              | $\mathbb{E}[z]=z+4$; TSI exp represents z_final - z_initial. Initially z is a tensor of random values in $[0,10^6]$                   |
-| geo0_obs          | 2.88        | [6.998, 7.008]                       | 80                             | $10^6$                | 0.14                 | 5              | TO                                       | -                                  | [6.998, 7.008]                      | upper bound only | Contains observe. $\mathbb{E}[z]=7$                                                                                                   |
-| die_conditioning  | 0.04        | [4.997, 5.007]                       | -                              | $10^6$                | 0.41                 | 4              | TO                                       | -                                  | [4.995,5.005]                       | upper bound only | Contains observe. $\mathbb{E}[d_1]=5$                                                                                                 |
-| PrinSys           | 0.41        | [0.995, 1.005]                       | 10                             | $10^6$                | 0.18                 | 1              | 0.26                                     | 1                                  | [0.995,1.005]                       | yes              | $p=1$                                                                                                                                 |
-| RevBin            | 0.33        | [12.996, 13.006]                     | 100                            | $10^6$                | 0.08                 | 3              | 0.24                                     | 3                                  | [12.996, 13.006]                    | yes              | $\mathbb{E}[z]=13$                                                                                                                    |
-| sprdwalk          | 0.31        | [2.365,2.375]; lower prob = 0.986897 | 10                             | $10^6$                | 0.04                 | 3              | -                                        | -                                  | -                                   | -                | **TSI**: exp represents expected runtime. Lower prob is term/(term+live). **cegispro2**: used to prove PAST (initial states: [x < n]) |
-| normal            | 0.02        | [0.527, 0.537]                       | -                              | $10^6$                | 76.66                | 2              | TO                                       | -                                  | [0.527,0.537]                       | upper bound only | $p=0.5342$                                                                                                                            |
-| Monty Hall        | 0.39        | [0.661, 0.671]                       | -                              | $10^6$                | 9.05                 | 1              | 239.52                                   | 1                                  | [0.661,0.671]                       | yes              | Contains an observe statement; $p=\frac23$                                                                                            |
-| Burglar Alarm     | 0.08        | [0.024, 0.034]                       | -                              | $10^6$                | 14.29                | 10             | TO                                       | -                                  | [0.024,0.034]                       | upper bound only | Contains an observe statement; $p=0.029$                                                                                              |
+| Program name         | $t_{TSI}$     | $t_{cegispro2}$ | $I$                | t   | \|S'\| | True expected value  |
+| -------------------- | ------------- | --------------- | ------------------ | --- | ------ | -------------------- |
+| brp\_10              | **3.90**      | 183.66          | [0.004, 0.019]     | 100 | 74     | -                    |
+| brp                  | 3.27          | **0.44**   | [0, 1]             | 100 | 6      | -                    |
+| my\_chain\_5         | **0.54** | 3.96            | [0.667, 0.677]     | 20  | 10     | $p=0.67232$          |
+| grid\_small          | **0.63** | 17.51           | [0, 0.006]         | 20  | 38     | $p=\frac{1}{2^{10}}$ |
+| gambler              | **0.86** | 0.43 *          | [0.493, 0.509]     | 20  | 3      | $p=\frac12=0.5$      |
+| geo0                 | **2.94** | 0.15 *          | [4.997, 5.007] *   | 80  | 5      | $\mathbb{E}[z]=5$    |
+| **geo0_obs**         | **2.88** | 0.14 *          | [6.998, 7.008] *   | 80  | 5      | $\mathbb{E}[z]=7$    |
+| **die_conditioning** | **0.04** | 0.41 *          | [4.997, 5.007]     | -   | 4      | $\mathbb{E}[d_1]=5$  |
+| PrinSys              | **0.41** | 0.44            | [0.995, 1.005]     | 10  | 2      | $p=1$                |
+| RevBin               | 0.33          | **0.32**   | [12.996, 13.006] * | 100 | 6      | $\mathbb{E}[z]=13$   |
+| normal               | **0.02** | 316.18          | [0.527, 0.537]     | -   | 2      | $p=0.5342$           |
+| **Monty Hall**       | **0.39** | 9.05 *          | [0.661, 0.671]     | -   | 2      | $p=\frac23$          |
+| **Burglar Alarm**    | **0.08** | 14.29 *         | [0.024, 0.034]     | -   | 10     | $p=0.029$            |
 
 ## Explanation of exact probabilities / expected values
 
